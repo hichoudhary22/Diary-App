@@ -8,9 +8,7 @@ const diaryRoute = require("./routes/diaryRoute");
 
 app = express();
 
-app.use(
-  cors({ credentials: true, origin: "https://diary-app-4ipf.onrender.com" })
-);
+app.use(cors({ origin: "https://diary-app-4ipf.onrender.com" }));
 
 app.use(express.json());
 
