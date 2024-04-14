@@ -24,7 +24,7 @@ export default function LoginPage() {
 
     const newUser = { name: userName, email, password };
     try {
-      const response = await fetch(`${serverRootUrl}/user/signUp`, {
+      const response = await fetch(`${serverRootUrl}/user/signup`, {
         method: "POST",
         headers: {
           "content-type": "application/json",

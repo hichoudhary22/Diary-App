@@ -1,6 +1,7 @@
 const diaryModel = require("../models/diaryModel");
+const { catchAsyncError } = require("../utils/errorHandler");
 
-module.exports.allEntries = async (req, res, next) => {
+module.exports.allEntries = catchAsyncError(async (req, res, next) => {
   let queryObj = { userId: req.user._id.toString(), ...req.query };
 
   [("page", "sort", "limit", "fields")].forEach(
@@ -48,19 +49,15 @@ module.exports.allEntries = async (req, res, next) => {
   //   query = query.skip(0).limit(3);
   // }
 
-  try {
-    const searchedData = await query;
-    res.status(200).json({
-      user: req.user.name,
-      noOfEntries: searchedData.length,
-      diaryEntries: searchedData,
-    });
-  } catch (e) {
-    res.status(400).json({ error: e });
-  }
-};
+  const searchedData = await query;
+  res.status(200).json({
+    user: req.user.name,
+    noOfEntries: searchedData.length,
+    diaryEntries: searchedData,
+  });
+});
 
-module.exports.newEntry = async (req, res, next) => {
+module.exports.newEntry = catchAsyncError(async (req, res, next) => {
   const newEntry = {
     userId: req.user._id.toString(),
     email: req.user.email,
@@ -69,21 +66,18 @@ module.exports.newEntry = async (req, res, next) => {
     content: req.body.content,
   };
   const response = await diaryModel.create(newEntry);
-  res.send(response);
-};
+  res.status(200).json({ message: "new Entry created", response });
+});
 
-module.exports.modifyEntry = async (req, res, next) => {
+module.exports.modifyEntry = catchAsyncError(async (req, res, next) => {
   const id = req.body._id;
   delete req.body._id;
   const response = await diaryModel.findByIdAndUpdate(id, req.body);
   res.send(response);
-};
+});
 
-module.exports.deleteEntry = async (req, res, next) => {
+module.exports.deleteEntry = catchAsyncError(async (req, res, next) => {
   const response = await diaryModel.findOneAndDelete({ _id: req.body.id });
-  if (!response) {
-    res.send("error");
-  } else {
-    res.send("deleted");
-  }
-};
+  if (!response) next(Error("Error in deleting entry"));
+  else res.status(200).json({ message: "successfully deleted" });
+});

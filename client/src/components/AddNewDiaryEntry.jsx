@@ -15,7 +15,7 @@ export default function AddNewDiaryEntry() {
   async function handleSave(e) {
     e.preventDefault();
     const serverRootUrl = import.meta.env.VITE_SERVER_ROOT_URL;
-    const url = `${serverRootUrl}/diary/newEntry`;
+    const url = `${serverRootUrl}/diary`;
     const singleEntry = { heading, content, date };
 
     const response = await fetch(url, {

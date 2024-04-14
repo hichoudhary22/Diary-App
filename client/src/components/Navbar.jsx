@@ -11,7 +11,7 @@ export default function Navbar() {
   async function handelLogOut() {
     const serverRootUrl = import.meta.env.VITE_SERVER_ROOT_URL;
 
-    const logOutResponse = await fetch(`${serverRootUrl}/user/logOut`, {
+    const logOutResponse = await fetch(`${serverRootUrl}/user/logout`, {
       method: "GET",
       credentials: "include",
       withCredentials: true,
