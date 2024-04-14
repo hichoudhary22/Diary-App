@@ -10,7 +10,7 @@ app = express();
 
 app.use(
   cors({
-    credentials: "include",
+    credentials: true,
     origin: "https://diary-app-4ipf.onrender.com",
   })
 );
