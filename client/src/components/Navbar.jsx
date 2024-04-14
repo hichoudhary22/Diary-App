@@ -46,8 +46,8 @@ export default function Navbar() {
           </div>
         ) : (
           <div className="flex gap-2">
-            <Button onClick={() => navigate("/signUp")}> Register</Button>
-            <Button onClick={() => navigate("/login")}> Login</Button>
+            <Button onClick={() => navigate("/signUp")}>Sign Up</Button>
+            <Button onClick={() => navigate("/")}>Login</Button>
           </div>
         )}
       </div>
