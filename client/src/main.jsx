@@ -10,7 +10,7 @@ import DiaryHomePage from "./pages/DiaryHomePage.jsx";
 import LoginPage from "./pages/LoginPage.jsx";
 import { DataProvider } from "./contexts/DataContext.jsx";
 import NewEntryPage from "./pages/NewEntryPage.jsx";
-import ModifyOldEntry from "./components/ModifyOldEntry.jsx";
+import ModifyOldEntry from "./pages/ModifyOldEntry.jsx";
 
 const router = createBrowserRouter([
   {
@@ -27,6 +27,7 @@ const router = createBrowserRouter([
       },
       {
         path: "/diary",
+
         children: [
           { path: "", element: <DiaryHomePage /> },
           {

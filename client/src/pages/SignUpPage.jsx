@@ -1,5 +1,7 @@
 import { useState } from "react";
-import { Form, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import Input from "../components/Input";
+import CustomForm from "../components/CustomForm";
 
 export default function LoginPage() {
   const [userName, setUserName] = useState("");
@@ -18,7 +20,7 @@ export default function LoginPage() {
       return;
     }
     if (password !== confirmPassword) {
-      alert("both password does not match");
+      alert("both password should match");
       return;
     }
 
@@ -46,73 +48,34 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="flex justify-center items-center h-5/6">
-      <Form
-        method="POST"
-        className="flex flex-col lg:w-2/5 gap-2 border-2 rounded-xl px-6 py-10 bg-slate-200 "
-      >
-        <div className="flex">
-          <label
-            className="w-2/4 mx-2 text-xl font-semibold"
-            htmlFor="userName"
-          >
-            User Name
-          </label>
-          <input
-            className="rounded-md w-3/4"
-            type="text"
-            name="userName"
-            onChange={(e) => setUserName(e.target.value)}
-          />
-        </div>
-        <div className="flex">
-          <label className="w-2/4 mx-2 text-xl font-semibold" htmlFor="email">
-            Email
-          </label>
-          <input
-            className="rounded-md w-3/4"
-            type="text"
-            name="email"
-            onChange={(e) => setEmail(e.target.value)}
-          />
-        </div>
-        <div className="flex">
-          <label
-            className="w-2/4 mx-2 text-xl font-semibold"
-            htmlFor="password"
-          >
-            Password
-          </label>
-          <input
-            className="rounded-md w-3/4"
-            type="text"
-            name="password"
-            onChange={(e) => setPassword(e.target.value)}
-          />
-        </div>
-        <div className="flex">
-          <label
-            className="w-2/4 mx-2 text-xl font-semibold"
-            htmlFor="confirmPassword"
-          >
-            Confirm Password
-          </label>
-          <input
-            className="rounded-md w-3/4"
-            type="text"
-            name="confirmPassword"
-            onChange={(e) => {
-              setConfirmPassword(e.target.value);
-            }}
-          />
-        </div>
+    <div className="flex justify-center items-center h-[90%]">
+      <CustomForm>
+        <Input
+          name={"User Name"}
+          type={"text"}
+          value={userName}
+          onChange={setUserName}
+        />
+        <Input name={"email"} type={"text"} value={email} onChange={setEmail} />
+        <Input
+          name={"password"}
+          type={"password"}
+          value={password}
+          onChange={setPassword}
+        />
+        <Input
+          name={"confirm password"}
+          type={"password"}
+          value={confirmPassword}
+          onChange={setConfirmPassword}
+        />
         <button
           className="bg-black text-white rounded-lg mt-5 p-4 border-slate-400 text-xl"
           onClick={(e) => handelRegister(e)}
         >
           Register
         </button>
-      </Form>
+      </CustomForm>
     </div>
   );
 }

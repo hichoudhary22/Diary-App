@@ -1,13 +1,10 @@
 import { useNavigate } from "react-router-dom";
 import { useDataDispatch } from "../contexts/DataContext";
+import readableDate from "../utils/ReadableDate";
 
 export default function DiaryEntriesList({ entry }) {
   const navigate = useNavigate();
   const dataDispatch = useDataDispatch();
-
-  function readableDate(date) {
-    return new Date(date).toDateString();
-  }
 
   async function handelDelete() {
     const serverRootUrl = import.meta.env.VITE_SERVER_ROOT_URL;

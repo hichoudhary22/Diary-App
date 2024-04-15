@@ -1,5 +1,7 @@
 import { useState } from "react";
-import { Form, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import Input from "../components/Input";
+import CustomForm from "../components/CustomForm";
 
 export default function LoginPage() {
   const [email, setEmail] = useState("");
@@ -35,34 +37,14 @@ export default function LoginPage() {
   }
   return (
     <div className="flex justify-center items-center h-5/6">
-      <Form
-        method="POST"
-        className="flex flex-col w-4/5 sm:w-2/3 lg:w-[700px] gap-5 border-2 rounded-xl px-6 py-10 bg-slate-200"
-      >
-        <div className="flex flex-col gap-1">
-          <label className="text-xl font-semibold" htmlFor="email">
-            EMAIL
-          </label>
-          <input
-            name="email"
-            className=" text-xl rounded-md px-2 py-2"
-            type="text"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-          />
-        </div>
-        <div className="flex flex-col gap-1">
-          <label className="text-xl font-semibold" htmlFor="password">
-            PASSWORD
-          </label>
-          <input
-            name="password"
-            className=" text-xl rounded-md px-2 py-2"
-            type="text"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-          />
-        </div>
+      <CustomForm>
+        <Input name={"email"} type={"text"} value={email} onChange={setEmail} />
+        <Input
+          name={"password"}
+          type={"password"}
+          value={password}
+          onChange={setPassword}
+        />
         <button
           className="bg-black text-white rounded-lg my-2 p-4 border-slate-400 text-xl font-bold"
           onClick={(e) => {
@@ -71,8 +53,7 @@ export default function LoginPage() {
         >
           Login
         </button>
-      </Form>
-      {/* </div> */}
+      </CustomForm>
     </div>
   );
 }
