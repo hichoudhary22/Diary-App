@@ -1,17 +1,16 @@
 import { Form, useNavigate } from "react-router-dom";
-import Calender from "../components/Calender";
 import { useState } from "react";
 import { useParams } from "react-router-dom";
-import { useData } from "../contexts/DataContext";
-import calenderImg from "../assets/calender.png";
+import { useDataContext } from "../contexts/DataContext";
 import Input from "../components/Input";
-import readableDate from "../utils/ReadableDate";
+import CalendarComponent from "../components/CalendarComponent";
+import readableDate from "../utils/readableDate";
 
 export default function ModifyOldEntry() {
   const navigate = useNavigate();
 
   const { id } = useParams();
-  const data = useData();
+  const [data, dispatch] = useDataContext();
 
   const modify = data.diaryEntries.filter(
     (diaryEntry) => diaryEntry._id === id
@@ -20,8 +19,6 @@ export default function ModifyOldEntry() {
   const [heading, setHeading] = useState(modify?.heading);
   const [date, setDate] = useState(readableDate(modify?.date));
   const [content, setContent] = useState(modify?.content);
-
-  const [showCalender, setShowCalender] = useState(false);
 
   async function handleSave(e) {
     e.preventDefault();
@@ -49,23 +46,8 @@ export default function ModifyOldEntry() {
   }
 
   return (
-    <div className="flex-col sm:flex sm:flex-row gap-4">
-      <div className="sm:hidden self-end">
-        <button
-          className="h-8 w-8 sm:h-10 sm:w-10"
-          onClick={() => setShowCalender((val) => !val)}
-        >
-          <img src={calenderImg} />
-        </button>
-        {showCalender && (
-          <div className="fixed right-4 m-4 bg-slate-100 rounded-3xl p-4 bg-opacity-[0.93]">
-            <Calender activeDate={date} setActiveDate={setDate} />
-          </div>
-        )}
-      </div>
-      <div className="hidden sm:flex flex-grow-0 ">
-        <Calender activeDate={date} setActiveDate={setDate} />
-      </div>
+    <div className="flex-col md:flex md:flex-row gap-4">
+      <CalendarComponent />
       <Form className="flex flex-col flex-grow">
         <button
           className="bg-black text-white rounded-lg my-2 px-4 border-slate-400"

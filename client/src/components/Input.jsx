@@ -1,7 +1,7 @@
 export default function Input({ name, type, value, onChange }) {
   return (
     <div className="w-full flex flex-col">
-      <label className="text-md capitalize" htmlFor={name}>
+      <label className="mx-1 text-md capitalize" htmlFor={name}>
         {name}
       </label>
       {type === "textArea" ? (

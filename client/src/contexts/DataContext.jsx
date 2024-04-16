@@ -10,19 +10,21 @@ export function DataProvider({ children }) {
     </DataContext.Provider>
   );
 }
-export function useData() {
-  const { data } = useContext(DataContext);
-  return data;
-}
-export function useDataDispatch() {
-  const { dispatch } = useContext(DataContext);
-  return dispatch;
+export function useDataContext() {
+  const dataContextArray = useContext(DataContext);
+  return [dataContextArray.data, dataContextArray.dispatch];
 }
 
 const initialData = {
   // token:"",
+  userId: "",
   userName: "",
+  userEmail: "",
+  noOfEntries: "",
   diaryEntries: [],
+  // ---------------
+  activeDate: {},
+  contentContains: "",
 };
 
 function dataReducer(data, action) {
@@ -30,8 +32,7 @@ function dataReducer(data, action) {
     case "setData":
       return {
         ...data,
-        userName: action.userName,
-        diaryEntries: action.diaryEntries,
+        ...action.userDiaryData,
       };
     case "deleteOneEntry":
       return {
@@ -40,6 +41,13 @@ function dataReducer(data, action) {
       };
     case "resetData":
       return initialData;
+    case "setActiveDate":
+      return { ...data, activeDate: action.activeDate };
+    case "setContentContains":
+      return {
+        ...data,
+        contentContains: action.contentContains,
+      };
     default:
       return "something went wrong ";
   }

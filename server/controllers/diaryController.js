@@ -51,7 +51,9 @@ module.exports.allEntries = catchAsyncError(async (req, res, next) => {
 
   const searchedData = await query;
   res.status(200).json({
-    user: req.user.name,
+    userId: req.user._id,
+    userName: req.user.name,
+    userEmail: req.user.email,
     noOfEntries: searchedData.length,
     diaryEntries: searchedData,
   });

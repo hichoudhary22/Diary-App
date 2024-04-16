@@ -1,11 +1,10 @@
 import { Link, useNavigate } from "react-router-dom";
-import { useData, useDataDispatch } from "../contexts/DataContext";
+import { useDataContext } from "../contexts/DataContext";
 import Button from "./Button";
 import newEntryImg from "../assets/newEntry.png";
 
 export default function Navbar() {
-  const data = useData();
-  const dataDispatch = useDataDispatch();
+  const [{ userName }, dispatch] = useDataContext();
   const navigate = useNavigate();
 
   async function handelLogOut() {
@@ -22,7 +21,7 @@ export default function Navbar() {
     if (logOutResponse.status !== 200) {
       alert("something went wrong try again");
     } else {
-      dataDispatch({ type: "resetData" });
+      dispatch({ type: "resetData" });
       navigate("/");
       alert("logout succesful");
     }
@@ -30,19 +29,19 @@ export default function Navbar() {
   return (
     <div>
       <div className="flex justify-between">
-        <p className="text-2xl sm:text-3xl font-bold capitalize">
+        <p className="text-3xl font-bold capitalize">
           <Link to={"/diary"}>
-            {data.userName ? `${data.userName}'s Diary` : "Diary App"}
+            {userName ? `${userName}'s Diary` : "Diary App"}
           </Link>
         </p>
-        {data.userName ? (
+        {userName ? (
           <div className="flex gap-2">
             <img
-              className="h-8 w-8 sm:h-10 sm:w-10"
+              className="h-12 w-12 -my-2"
               src={newEntryImg}
               onClick={() => navigate("/diary/newEntry")}
             />
-            <Button onClick={() => handelLogOut()}>Log Out</Button>
+            <Button onClick={handelLogOut}>Log Out</Button>
           </div>
         ) : (
           <div className="flex gap-2">

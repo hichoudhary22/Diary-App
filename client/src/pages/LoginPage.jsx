@@ -15,7 +15,7 @@ export default function LoginPage() {
     const serverRootUrl = import.meta.env.VITE_SERVER_ROOT_URL;
 
     const userInfo = {
-      email,
+      email: email.toLowerCase(),
       password,
     };
     const response = await fetch(`${serverRootUrl}/user/login`, {
