@@ -1,28 +1,15 @@
 import { useEffect } from "react";
-import { useSearchParams } from "react-router-dom";
-
 import { useDataContext } from "../contexts/DataContext";
 
 import DiaryEntriesListItem from "../components/DiaryEntriesListItem";
 import SearchComponent from "../components/SearchComponent";
-import CalendarComponent from "../components/CalendarComponent";
 import fetchData from "../utils/fetchData";
+import { useSearchParams } from "react-router-dom";
+import SearchSummary from "../components/SearchSummary";
 
 export default function DiaryHomePage() {
-  const [{ activeDate, diaryEntries }, dispatch] = useDataContext();
-
+  const [{ diaryEntries }, dispatch] = useDataContext();
   const [searchParams] = useSearchParams();
-
-  let searchSummary = "";
-  if (searchParams.get("date[gte]")) {
-    searchSummary = `Yours Entries of Date ${activeDate} :-`;
-  } else if (searchParams.get("contentContains")) {
-    searchSummary = `Entries Containing "${searchParams.get(
-      "contentContains"
-    )}" :-`;
-  } else {
-    searchSummary = "All Entries :-";
-  }
 
   useEffect(() => {
     (async () => {
@@ -35,17 +22,16 @@ export default function DiaryHomePage() {
   }, [searchParams, dispatch]);
 
   return (
-    <div className="flex flex-col md:flex-row gap-2">
-      <div className="flex md:flex-col min-w-[330px]">
+    <div className="flex gap-2">
+      <div className="hidden sm:block min-w-[250px]">
         <SearchComponent />
-        <CalendarComponent />
       </div>
       <div className="flex flex-col flex-grow">
-        <div className="text-3xl">{searchSummary}</div>
+        <SearchSummary />
         {diaryEntries?.length === 0 ? (
           <DiaryEntriesListItem entry={"none"} />
         ) : (
-          <div className="overflow-scroll h-5/6">
+          <div className="overflow-scroll h-[85vh] border-2 border-white rounded-md px-1">
             <ul>
               {diaryEntries?.map((entry) => (
                 <DiaryEntriesListItem entry={entry} key={entry._id} />

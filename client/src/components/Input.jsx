@@ -1,6 +1,6 @@
-export default function Input({ name, type, value, onChange }) {
+export default function Input({ name, type, value, onChange, flexDir }) {
   return (
-    <div className="w-full flex flex-col">
+    <div className={`w-full ${flexDir}`}>
       <label className="mx-1 text-md capitalize" htmlFor={name}>
         {name}
       </label>
@@ -28,3 +28,8 @@ export default function Input({ name, type, value, onChange }) {
     </div>
   );
 }
+
+Input.defaultProps = {
+  flexDir: "flex flex-col",
+  type: "text",
+};

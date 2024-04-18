@@ -1,7 +1,8 @@
 import { Link, useNavigate } from "react-router-dom";
 import { useDataContext } from "../contexts/DataContext";
 import Button from "./Button";
-import newEntryImg from "../assets/newEntry.png";
+import pencil from "../assets/pencil.png";
+import HamburgerMenu from "./HamburgerMenu";
 
 export default function Navbar() {
   const [{ userName }, dispatch] = useDataContext();
@@ -36,12 +37,15 @@ export default function Navbar() {
         </p>
         {userName ? (
           <div className="flex gap-2">
-            <img
-              className="h-12 w-12 -my-2"
-              src={newEntryImg}
-              onClick={() => navigate("/diary/newEntry")}
-            />
-            <Button onClick={handelLogOut}>Log Out</Button>
+            <div className="hidden sm:flex">
+              <img
+                className="h-8 w-8 mx-2"
+                src={pencil}
+                onClick={() => navigate("/diary/newEntry")}
+              />
+              <Button onClick={handelLogOut}>Log Out</Button>
+            </div>
+            <HamburgerMenu handelLogOut={handelLogOut} />
           </div>
         ) : (
           <div className="flex gap-2">
@@ -50,6 +54,7 @@ export default function Navbar() {
           </div>
         )}
       </div>
+
       <hr className="my-1" />
     </div>
   );

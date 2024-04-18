@@ -23,8 +23,8 @@ const initialData = {
   noOfEntries: "",
   diaryEntries: [],
   // ---------------
-  activeDate: {},
-  contentContains: "",
+  // activeDate: {},
+  // contentContains: "",
 };
 
 function dataReducer(data, action) {
