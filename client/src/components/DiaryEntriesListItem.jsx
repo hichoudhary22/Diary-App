@@ -1,5 +1,4 @@
 import { useNavigate } from "react-router-dom";
-import readableDate from "../utils/readableDate";
 import Button from "./Button";
 import PopUp from "./PopUp";
 import { useState } from "react";
@@ -42,7 +41,9 @@ export default function DiaryEntriesListItem({ entry }) {
         <li className="flex flex-col h-14">
           <div className="flex justify-between flex-grow">
             <h3 className="text-xl font-semibold">{heading}</h3>
-            <p className="font-extralight text-sm">{readableDate(date)}</p>
+            <p className="font-extralight text-sm">
+              {new Date(date).toDateString()}
+            </p>
           </div>
           <p className="overflow-x-hidden">{content}</p>
         </li>
