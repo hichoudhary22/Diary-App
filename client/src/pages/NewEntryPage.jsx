@@ -54,7 +54,6 @@ export default function AddNewDiaryEntry() {
           onChange={setHeading}
         />
         <Calender name={"Date"} setDate={setDate} value={date} />
-        <p>location picker</p>
         <Input
           name={"content"}
           type={"textArea"}

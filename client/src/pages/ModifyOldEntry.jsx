@@ -3,27 +3,21 @@ import { useState } from "react";
 import { useParams } from "react-router-dom";
 import { useDataContext } from "../contexts/DataContext";
 import Input from "../components/Input";
-import CalendarComponent from "../components/CalendarComponent";
-import readableDate from "../utils/readableDate";
 import Loading from "../components/Loading";
+import Calender from "../components/Calender";
 
 export default function ModifyOldEntry() {
   const navigate = useNavigate();
-
   const { id } = useParams();
   const [{ isLoading, diaryEntries }, dispatch] = useDataContext();
-
   const modify = diaryEntries.filter((diaryEntry) => diaryEntry._id === id)[0];
-
   const [heading, setHeading] = useState(modify?.heading);
-  const [date, setDate] = useState(readableDate(modify?.date));
+  const [date, setDate] = useState(modify?.date);
   const [content, setContent] = useState(modify?.content);
 
   async function handleSave(e) {
     e.preventDefault();
-
     dispatch({ type: "setIsLoading", isLoading: true });
-
     const serverRootUrl = import.meta.env.VITE_SERVER_ROOT_URL;
     const url = `${serverRootUrl}/diary`;
     const singleEntry = {
@@ -40,9 +34,7 @@ export default function ModifyOldEntry() {
       credentials: "include",
       body: JSON.stringify(singleEntry),
     });
-
     dispatch({ type: "setIsLoading", isLoading: false });
-
     if (response.status === 200) {
       navigate("/diary");
     } else {
@@ -53,7 +45,6 @@ export default function ModifyOldEntry() {
   return (
     <div className="flex-col md:flex md:flex-row gap-4">
       {isLoading && <Loading />}
-      <CalendarComponent />
       <Form className="flex flex-col flex-grow">
         <button
           className="bg-black text-white rounded-lg my-2 px-4 border-slate-400"
@@ -67,7 +58,7 @@ export default function ModifyOldEntry() {
           value={heading}
           onChange={setHeading}
         />
-        <Input name={"date"} type={"text"} value={date} onChange={setDate} />
+        <Calender name={"Date"} value={date} setDate={setDate} />
         <p>location picker</p>
         <Input
           name={"content"}
