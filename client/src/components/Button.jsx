@@ -11,6 +11,8 @@ export default function Button({ onClick, children, type }) {
     style = "bg-slate-200 rounded-md py-2 text-2xl font-semibold";
   else style = "bg-black text-white px-3 h-fit py-[6px] mx-1 rounded-lg";
 
+  // className="bg-black text-white rounded-lg my-2 p-4 border-slate-400 text-xl font-bold"
+
   return (
     <button className={style} onClick={onClick}>
       {children}

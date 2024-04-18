@@ -5,16 +5,15 @@ import { useDataContext } from "../contexts/DataContext";
 import Input from "../components/Input";
 import CalendarComponent from "../components/CalendarComponent";
 import readableDate from "../utils/readableDate";
+import Loading from "../components/Loading";
 
 export default function ModifyOldEntry() {
   const navigate = useNavigate();
 
   const { id } = useParams();
-  const [data, dispatch] = useDataContext();
+  const [{ isLoading, diaryEntries }, dispatch] = useDataContext();
 
-  const modify = data.diaryEntries.filter(
-    (diaryEntry) => diaryEntry._id === id
-  )[0];
+  const modify = diaryEntries.filter((diaryEntry) => diaryEntry._id === id)[0];
 
   const [heading, setHeading] = useState(modify?.heading);
   const [date, setDate] = useState(readableDate(modify?.date));
@@ -22,6 +21,9 @@ export default function ModifyOldEntry() {
 
   async function handleSave(e) {
     e.preventDefault();
+
+    dispatch({ type: "setIsLoading", isLoading: true });
+
     const serverRootUrl = import.meta.env.VITE_SERVER_ROOT_URL;
     const url = `${serverRootUrl}/diary`;
     const singleEntry = {
@@ -38,6 +40,9 @@ export default function ModifyOldEntry() {
       credentials: "include",
       body: JSON.stringify(singleEntry),
     });
+
+    dispatch({ type: "setIsLoading", isLoading: false });
+
     if (response.status === 200) {
       navigate("/diary");
     } else {
@@ -47,6 +52,7 @@ export default function ModifyOldEntry() {
 
   return (
     <div className="flex-col md:flex md:flex-row gap-4">
+      {isLoading && <Loading />}
       <CalendarComponent />
       <Form className="flex flex-col flex-grow">
         <button

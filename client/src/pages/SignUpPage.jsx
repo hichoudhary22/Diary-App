@@ -1,9 +1,14 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Navigate, useNavigate } from "react-router-dom";
 import Input from "../components/Input";
 import CustomForm from "../components/CustomForm";
+import Button from "../components/Button";
+import Loading from "../components/Loading";
+import { useDataContext } from "../contexts/DataContext";
 
 export default function LoginPage() {
+  const [{ isLoading, auth }, dispatch] = useDataContext();
+
   const [userName, setUserName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -14,8 +19,10 @@ export default function LoginPage() {
   async function handelRegister(e) {
     const serverRootUrl = import.meta.env.VITE_SERVER_ROOT_URL;
 
+    dispatch({ type: "setIsLoading", isLoading: true });
+
     e.preventDefault();
-    if (!userName || !email || !password) {
+    if (!userName || !email || !password || !confirmPassword) {
       alert("please provide all the details");
       return;
     }
@@ -37,7 +44,10 @@ export default function LoginPage() {
       });
       const result = await response.json();
 
+      dispatch({ type: "setIsLoading", isLoading: false });
+
       if (response.status === 200) {
+        dispatch({ type: "setAuth", auth: true });
         navigate("/diary");
       } else {
         alert(result.message);
@@ -49,6 +59,8 @@ export default function LoginPage() {
 
   return (
     <div className="flex justify-center items-center h-[90%]">
+      {isLoading && <Loading />}
+      {auth && <Navigate to={"/diary"} />}
       <CustomForm>
         <Input
           name={"User Name"}
@@ -69,12 +81,7 @@ export default function LoginPage() {
           value={confirmPassword}
           onChange={setConfirmPassword}
         />
-        <button
-          className="bg-black text-white rounded-lg mt-5 p-4 border-slate-400 text-xl"
-          onClick={(e) => handelRegister(e)}
-        >
-          Register
-        </button>
+        <Button onClick={(e) => handelRegister(e)}>Register</Button>
       </CustomForm>
     </div>
   );

@@ -16,7 +16,9 @@ export function useDataContext() {
 }
 
 const initialData = {
+  isLoading: false,
   // token:"",
+  auth: false,
   userId: "",
   userName: "",
   userEmail: "",
@@ -48,6 +50,10 @@ function dataReducer(data, action) {
         ...data,
         contentContains: action.contentContains,
       };
+    case "setIsLoading":
+      return { ...data, isLoading: action.isLoading };
+    case "setAuth":
+      return { ...data, auth: action.auth };
     default:
       return "something went wrong ";
   }

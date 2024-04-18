@@ -36,7 +36,7 @@ export default function DiaryEntriesListItem({ entry }) {
         />
       )}
       <div
-        className="pl-2 rounded-md my-2 flex justify-between items-center bg-slate-200"
+        className="px-2 rounded-md my-2 flex justify-between items-center bg-slate-200"
         onClick={() => setShowPopUp(true)}
       >
         <li className="flex flex-col h-14">
@@ -44,7 +44,7 @@ export default function DiaryEntriesListItem({ entry }) {
             <h3 className="text-xl font-semibold">{heading}</h3>
             <p className="font-extralight text-sm">{readableDate(date)}</p>
           </div>
-          <p className="overflow-hidden">{content}</p>
+          <p className="overflow-x-hidden">{content}</p>
         </li>
       </div>
     </div>

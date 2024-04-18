@@ -11,8 +11,7 @@ app = express();
 app.use(
   cors({
     credentials: true,
-    origin: "http://localhost:5173",
-    // https://diary-app-4ipf.onrender.com
+    origin: "https://diary-app-4ipf.onrender.com",
   })
 );
 

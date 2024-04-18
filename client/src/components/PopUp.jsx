@@ -1,13 +1,15 @@
 import { useNavigate } from "react-router-dom";
 import Button from "./Button";
 import { useDataContext } from "../contexts/DataContext";
+import Loading from "./Loading";
 
 export default function PopUp({ id, heading, date, content, setShowPopUp }) {
   const navigate = useNavigate();
-  const [, dispatch] = useDataContext();
+  const [{ isLoading }, dispatch] = useDataContext();
 
   async function handelDelete() {
     const serverRootUrl = import.meta.env.VITE_SERVER_ROOT_URL;
+    dispatch({ type: "setIsLoading", isLoading: true });
 
     const sentData = { id };
     const response = await fetch(`${serverRootUrl}/diary/`, {
@@ -18,6 +20,8 @@ export default function PopUp({ id, heading, date, content, setShowPopUp }) {
       method: "DELETE",
       body: JSON.stringify(sentData),
     });
+    dispatch({ type: "setIsLoading", isLoading: false });
+
     if (response.status === 200) {
       dispatch({ type: "deleteOneEntry", id });
     } else {
@@ -30,6 +34,7 @@ export default function PopUp({ id, heading, date, content, setShowPopUp }) {
       className="absolute flex justify-center items-center w-full h-full top-0 left-0"
       //   onClick={() => setShowPopUp(false)}
     >
+      {isLoading && <Loading />}
       <div className="flex flex-col gap-2 h-5/6 w-5/6 p-4 rounded-2xl bg-slate-200">
         <div className="flex self-end">
           <Button onClick={() => navigate(`/diary/${id}`)}>Edit</Button>

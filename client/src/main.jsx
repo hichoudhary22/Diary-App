@@ -11,6 +11,7 @@ import LoginPage from "./pages/LoginPage.jsx";
 import { DataProvider } from "./contexts/DataContext.jsx";
 import NewEntryPage from "./pages/NewEntryPage.jsx";
 import ModifyOldEntry from "./pages/ModifyOldEntry.jsx";
+import ProtectedRoutes from "./components/ProtectedRoutes.jsx";
 
 const router = createBrowserRouter([
   {
@@ -27,7 +28,7 @@ const router = createBrowserRouter([
       },
       {
         path: "/diary",
-
+        element: <ProtectedRoutes />,
         children: [
           { path: "", element: <DiaryHomePage /> },
           {

@@ -1,19 +1,23 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Navigate, useNavigate } from "react-router-dom";
 import Input from "../components/Input";
 import CustomForm from "../components/CustomForm";
+import Button from "../components/Button";
+import { useDataContext } from "../contexts/DataContext";
+import Loading from "../components/Loading";
 
 export default function LoginPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-
+  const [{ auth, isLoading }, dispatch] = useDataContext();
   const navigate = useNavigate();
 
   async function handelLogin(e) {
     e.preventDefault();
 
-    const serverRootUrl = import.meta.env.VITE_SERVER_ROOT_URL;
+    dispatch({ type: "setIsLoading", isLoading: true });
 
+    const serverRootUrl = import.meta.env.VITE_SERVER_ROOT_URL;
     const userInfo = {
       email: email.toLowerCase(),
       password,
@@ -29,7 +33,10 @@ export default function LoginPage() {
       body: JSON.stringify(userInfo),
     });
 
+    dispatch({ type: "setIsLoading", isLoading: false });
+
     if (response.status === 200) {
+      dispatch({ type: "setAuth", auth: true });
       navigate("/diary");
     } else {
       alert("something went wrong");
@@ -37,6 +44,8 @@ export default function LoginPage() {
   }
   return (
     <div className="flex justify-center items-center h-5/6">
+      {auth && <Navigate to={"/diary"} />}
+      {isLoading && <Loading />}
       <CustomForm>
         <Input name={"email"} type={"text"} value={email} onChange={setEmail} />
         <Input
@@ -45,14 +54,13 @@ export default function LoginPage() {
           value={password}
           onChange={setPassword}
         />
-        <button
-          className="bg-black text-white rounded-lg my-2 p-4 border-slate-400 text-xl font-bold"
+        <Button
           onClick={(e) => {
             handelLogin(e);
           }}
         >
           Login
-        </button>
+        </Button>
       </CustomForm>
     </div>
   );
