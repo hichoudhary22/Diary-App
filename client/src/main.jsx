@@ -12,11 +12,13 @@ import { DataProvider } from "./contexts/DataContext.jsx";
 import NewEntryPage from "./pages/NewEntryPage.jsx";
 import ModifyOldEntry from "./pages/ModifyOldEntry.jsx";
 import ProtectedRoutes from "./components/ProtectedRoutes.jsx";
+import PageNotFound from "./components/PageNotFound.jsx";
 
 const router = createBrowserRouter([
   {
     path: "/",
     element: <AppHomepage />,
+    errorElement: <PageNotFound />,
     children: [
       {
         path: "/",
@@ -36,6 +38,10 @@ const router = createBrowserRouter([
             element: <NewEntryPage />,
           },
           { path: ":id", element: <ModifyOldEntry /> },
+          {
+            path: "*",
+            element: <PageNotFound />,
+          },
         ],
       },
     ],

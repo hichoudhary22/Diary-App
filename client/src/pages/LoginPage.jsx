@@ -14,9 +14,8 @@ export default function LoginPage() {
 
   async function handelLogin(e) {
     e.preventDefault();
-
+    if (!email || !password) return alert("please enter all details");
     dispatch({ type: "setIsLoading", isLoading: true });
-
     const serverRootUrl = import.meta.env.VITE_SERVER_ROOT_URL;
     const userInfo = {
       email: email.toLowerCase(),

@@ -17,11 +17,8 @@ export default function LoginPage() {
   const navigate = useNavigate();
 
   async function handelRegister(e) {
-    const serverRootUrl = import.meta.env.VITE_SERVER_ROOT_URL;
-
-    dispatch({ type: "setIsLoading", isLoading: true });
-
     e.preventDefault();
+    const serverRootUrl = import.meta.env.VITE_SERVER_ROOT_URL;
     if (!userName || !email || !password || !confirmPassword) {
       alert("please provide all the details");
       return;
@@ -30,6 +27,7 @@ export default function LoginPage() {
       alert("both password should match");
       return;
     }
+    dispatch({ type: "setIsLoading", isLoading: true });
 
     const newUser = { name: userName, email, password };
     try {
