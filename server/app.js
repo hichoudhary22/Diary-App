@@ -23,7 +23,7 @@ app.use(cookieParser());
 app.use("/api/v1/user", userRoute);
 app.use("/api/v1/diary", diaryRoute);
 app.get("*", (req, res, next) => {
-  res.sendFile(path.join(__dirname, "dist/index.html"));
+  res.redirect("/");
   // res.status(400).json({ message: "route doesn't exist" });
 });
 
