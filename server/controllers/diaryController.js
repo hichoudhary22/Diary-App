@@ -66,6 +66,7 @@ module.exports.newEntry = catchAsyncError(async (req, res, next) => {
     userName: req.user.name,
     heading: req.body.heading || req.body.content.substring(0, 15),
     content: req.body.content,
+    date: req.body.date || Date.now(),
   };
   const response = await diaryModel.create(newEntry);
   res.status(200).json({ message: "new Entry created", response });

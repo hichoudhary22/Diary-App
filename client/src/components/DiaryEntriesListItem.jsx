@@ -38,7 +38,7 @@ export default function DiaryEntriesListItem({ entry }) {
         className="px-2 rounded-md my-2 flex justify-between items-center bg-slate-200"
         onClick={() => setShowPopUp(true)}
       >
-        <li className="flex flex-col h-14">
+        <li className="flex flex-col h-14 w-full">
           <div className="flex justify-between flex-grow">
             <h3 className="text-xl font-semibold">{heading}</h3>
             <p className="font-extralight text-sm">
