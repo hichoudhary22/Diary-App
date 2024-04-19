@@ -29,20 +29,17 @@ exports.createNewUser = catchAsyncError(async (req, res, next) => {
 exports.login = async (req, res, next) => {
   const { email, password } = req.body;
   const user = await userModel.findOne({ email });
-  if (!user) return next(Error("user not found! Please Login..."));
-
+  if (!user) return next(Error("user not found! Please signup..."));
   const auth = await bcrypt.compare(password, user.password);
-
   if (!auth) return next(Error("incorrect password"));
-
   const token = secretToken(user._id);
   res.cookie("token", token, {
     withCredentials: true,
     sameSite: "none",
     secure: true,
-    // httpOnly: true,
+    httpOnly: true,
   });
-  res.status(200).json({ message: `login succesful ${user.name}` });
+  res.status(200).json({ message: `welcome back!!! ${user.name}` });
 };
 
 exports.logOut = async (req, res, next) => {

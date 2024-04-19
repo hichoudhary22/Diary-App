@@ -1,12 +1,13 @@
 import { useState } from "react";
 import Button from "./Button";
 import SearchComponent from "./SearchComponent";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import hamburgerImg from "../assets/hamburger.png";
 
 export default function HamburgerMenu({ handelLogOut }) {
   const [showMenu, setShowMenu] = useState(false);
   const navigate = useNavigate();
+  const location = useLocation();
   return (
     <div className="sm:hidden">
       <button onClick={() => setShowMenu(true)}>
@@ -21,7 +22,7 @@ export default function HamburgerMenu({ handelLogOut }) {
             >
               &times;
             </button>
-            <SearchComponent />
+            {location.pathname === "/diary" && <SearchComponent />}
             <Button
               type={"ham"}
               onClick={() => {

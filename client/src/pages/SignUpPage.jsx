@@ -3,11 +3,10 @@ import { Navigate, useNavigate } from "react-router-dom";
 import Input from "../components/Input";
 import CustomForm from "../components/CustomForm";
 import Button from "../components/Button";
-import Loading from "../components/Loading";
 import { useDataContext } from "../contexts/DataContext";
 
 export default function LoginPage() {
-  const [{ isLoading, auth }, dispatch] = useDataContext();
+  const [{ auth }, dispatch] = useDataContext();
 
   const [userName, setUserName] = useState("");
   const [email, setEmail] = useState("");
@@ -36,28 +35,26 @@ export default function LoginPage() {
         headers: {
           "content-type": "application/json",
         },
-        body: JSON.stringify(newUser),
         withCredentials: true,
         credentials: "include",
+        mode: "cors",
+        body: JSON.stringify(newUser),
       });
-      const result = await response.json();
-
+      const data = await response.json();
       dispatch({ type: "setIsLoading", isLoading: false });
-
       if (response.status === 200) {
         dispatch({ type: "setAuth", auth: true });
         navigate("/diary");
       } else {
-        alert(result.message);
+        alert(data.message);
       }
     } catch (er) {
-      alert("something went wrong, try again");
+      alert(er.message);
     }
   }
 
   return (
     <div className="flex justify-center items-center h-[90%]">
-      {isLoading && <Loading />}
       {auth && <Navigate to={"/diary"} />}
       <CustomForm>
         <Input

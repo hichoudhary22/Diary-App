@@ -3,13 +3,13 @@ import { useState } from "react";
 import { useParams } from "react-router-dom";
 import { useDataContext } from "../contexts/DataContext";
 import Input from "../components/Input";
-import Loading from "../components/Loading";
 import Calender from "../components/Calender";
+import Button from "../components/Button";
 
 export default function ModifyOldEntry() {
   const navigate = useNavigate();
   const { id } = useParams();
-  const [{ isLoading, diaryEntries }, dispatch] = useDataContext();
+  const [{ diaryEntries }, dispatch] = useDataContext();
   const modify = diaryEntries.filter((diaryEntry) => diaryEntry._id === id)[0];
   const [heading, setHeading] = useState(modify?.heading);
   const [date, setDate] = useState(modify?.date);
@@ -17,41 +17,47 @@ export default function ModifyOldEntry() {
 
   async function handleSave(e) {
     e.preventDefault();
-    dispatch({ type: "setIsLoading", isLoading: true });
+
+    if (!content) return alert("content feild can not be empty");
+
     const serverRootUrl = import.meta.env.VITE_SERVER_ROOT_URL;
     const url = `${serverRootUrl}/diary`;
+
     const singleEntry = {
       ...modify,
       heading,
       date,
       content,
     };
-    const response = await fetch(url, {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      credentials: "include",
-      body: JSON.stringify(singleEntry),
-    });
-    dispatch({ type: "setIsLoading", isLoading: false });
-    if (response.status === 200) {
-      navigate("/diary");
-    } else {
-      alert("something went wrong");
+
+    dispatch({ type: "setIsLoading", isLoading: true });
+    try {
+      const response = await fetch(url, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        withCredentials: true,
+        credentials: "include",
+        mode: "cors",
+        body: JSON.stringify(singleEntry),
+      });
+      const data = await response.json();
+      dispatch({ type: "setIsLoading", isLoading: false });
+      if (response.status === 200) {
+        navigate("/diary");
+      } else {
+        alert(data.message);
+      }
+    } catch (er) {
+      alert(er.message);
     }
   }
 
   return (
     <div className="flex-col md:flex md:flex-row gap-4">
-      {isLoading && <Loading />}
       <Form className="flex flex-col flex-grow">
-        <button
-          className="bg-black text-white rounded-lg my-2 px-4 border-slate-400"
-          onClick={(e) => handleSave(e)}
-        >
-          Save
-        </button>
+        <Button onClick={(e) => handleSave(e)}>Save</Button>
         <Input
           name={"heading"}
           type={"text"}
@@ -59,7 +65,6 @@ export default function ModifyOldEntry() {
           onChange={setHeading}
         />
         <Calender name={"Date"} value={date} setDate={setDate} />
-        <p>location picker</p>
         <Input
           name={"content"}
           type={"textArea"}
