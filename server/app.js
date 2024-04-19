@@ -15,15 +15,14 @@ app.use(
     origin: "https://diary-app-4ipf.onrender.com",
   })
 );
-
 app.use(express.json());
-
 app.use(cookieParser());
 
 app.use("/api/v1/user", userRoute);
 app.use("/api/v1/diary", diaryRoute);
-app.get("*", (req, res, next) => {
-  res.redirect("/");
+app.use("*", (req, res, next) => {
+  console.log(req.path);
+  res.redirect("https://diary-app-4ipf.onrender.com/");
   // res.status(400).json({ message: "route doesn't exist" });
 });
 
