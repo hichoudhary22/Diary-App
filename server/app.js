@@ -5,14 +5,14 @@ const cors = require("cors");
 const userRoute = require("./routes/userRoute");
 const cookieParser = require("cookie-parser");
 const diaryRoute = require("./routes/diaryRoute");
+require("dotenv").config();
 
 app = express();
 
 app.use(
   cors({
     credentials: true,
-    // origin: "http://localhost:5173",
-    origin: "https://diary-app-4ipf.onrender.com",
+    origin: process.env.ORIGIN,
   })
 );
 app.use(express.json());
@@ -21,9 +21,7 @@ app.use(cookieParser());
 app.use("/api/v1/user", userRoute);
 app.use("/api/v1/diary", diaryRoute);
 app.use("*", (req, res, next) => {
-  console.log(req.path);
-  res.redirect("https://diary-app-4ipf.onrender.com/");
-  // res.status(400).json({ message: "route doesn't exist" });
+  res.status(400).json({ message: "route doesn't exist" });
 });
 
 app.use((err, req, res, next) => {
