@@ -7,6 +7,12 @@ export default function PopUp({ id, heading, date, content, setShowPopUp }) {
   const navigate = useNavigate();
   const [{ isLoading }, dispatch] = useDataContext();
 
+  date = new Date(date).toLocaleString("en-GB", {
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+  });
+
   async function handelDelete() {
     const serverRootUrl = import.meta.env.VITE_SERVER_ROOT_URL;
     dispatch({ type: "setIsLoading", isLoading: true });

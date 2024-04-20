@@ -12,7 +12,13 @@ export default function ModifyOldEntry() {
   const [{ diaryEntries }, dispatch] = useDataContext();
   const modify = diaryEntries.filter((diaryEntry) => diaryEntry._id === id)[0];
   const [heading, setHeading] = useState(modify?.heading);
-  const [date, setDate] = useState(modify?.date);
+  const [date, setDate] = useState(
+    new Date(modify?.date).toLocaleString("en-GB", {
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+    })
+  );
   const [content, setContent] = useState(modify?.content);
 
   async function handleSave(e) {

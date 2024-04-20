@@ -58,20 +58,8 @@ export default function Calender({ name, value, setDate }) {
   }
   calStr += "</tr></table>";
 
-  // function handelClick(e) {
-  //   const d = Number(e.target.innerHTML);
-  //   const params = {
-  //     "date[gte]": `${year}-${month + 1}-${d}`,
-  //     "date[lt]": `${year}-${month + 1}-${d + 1}`,
-  //   };
-  //   dispatch({
-  //     type: "setActiveDate",
-  //     activeDate: params,
-  //   });
-  // }
   function handelClick(e) {
     const d = Number(e.target.innerHTML);
-    // const date = `${year}-${month + 1}-${d}`;
     const date = `${d}-${monthArray[month]}-${year}`;
     setDate(date);
     setShowCalender(false);

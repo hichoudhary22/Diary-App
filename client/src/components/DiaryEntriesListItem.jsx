@@ -40,7 +40,9 @@ export default function DiaryEntriesListItem({ entry }) {
       >
         <li className="flex flex-col h-14 w-full">
           <div className="flex justify-between flex-grow">
-            <h3 className="text-xl font-semibold">{heading}</h3>
+            <h3 className="text-xl font-semibold">
+              {heading.substring(0, 20)}
+            </h3>
             <p className="font-extralight text-sm">
               {new Date(date).toDateString()}
             </p>
