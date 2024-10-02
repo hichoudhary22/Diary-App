@@ -2,6 +2,7 @@ const userModel = require("../models/userModel");
 const bcrypt = require("bcrypt");
 const { secretToken } = require("../utils/SecretToken");
 const { catchAsyncError } = require("../utils/errorHandler");
+const jwt = require('jsonwebtoken');
 
 exports.createNewUser = catchAsyncError(async (req, res, next) => {
   const { name, email, password } = req.body;
@@ -50,3 +51,21 @@ exports.logOut = async (req, res, next) => {
   });
   res.status(200).json({ message: "log out succesful" });
 };
+
+exports.checkAuth = catchAsyncError(async (req, res, next) => {
+  const token = req.cookies.token;
+  if (!token) {
+    return res.status(401).json({ authenticated: false });
+  }
+
+  try {
+    const decoded = jwt.verify(token, process.env.SECRET_KEY);
+    const user = await userModel.findById(decoded.id).select('-password');
+    if (!user) {
+      return res.status(401).json({ authenticated: false });
+    }
+    res.status(200).json({ authenticated: true, user });
+  } catch (error) {
+    res.status(401).json({ authenticated: false });
+  }
+});
