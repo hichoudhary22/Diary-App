@@ -17,23 +17,22 @@ export default function Navbar() {
       const response = await fetch(`${serverRootUrl}/user/logout`, {
         method: "GET",
         credentials: "include",
-        withCredentials: true,
         headers: {
           "Content-Type": "application/json",
         },
       });
-      const data = response.json();
+      const data = await response.json();
       dispatch({ type: "setIsLoading", isLoading: false });
 
       if (response.status !== 200) {
-        alert(data.message);
+        alert(data.message || "An error occurred during logout");
       } else {
         dispatch({ type: "resetData" });
         navigate("/");
-        alert(data.message);
+        alert(data.message || "Logged out successfully");
       }
     } catch (er) {
-      alert(er.message);
+      alert(er.message || "An error occurred during logout");
     }
   }
   return (
