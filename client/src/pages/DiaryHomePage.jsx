@@ -1,43 +1,30 @@
-import { useEffect } from "react";
 import { useDataContext } from "../contexts/DataContext";
-
 import DiaryEntriesListItem from "../components/DiaryEntriesListItem";
 import SearchComponent from "../components/SearchComponent";
-import { useSearchParams } from "react-router-dom";
 import SearchSummary from "../components/SearchSummary";
+import diaryHomePageHelper from "../helperFunctions/diaryHomePageHelper";
+import { useNavigate, useSearchParams } from "react-router-dom";
+import { useEffect } from "react";
 
 export default function DiaryHomePage() {
   const [{ diaryEntries }, dispatch] = useDataContext();
   const [searchParams] = useSearchParams();
+  const navigate = useNavigate();
 
   useEffect(() => {
-    fetchData();
-    async function fetchData() {
-      const serverRootUrl = import.meta.env.VITE_SERVER_ROOT_URL;
-
+    (async () => {
       dispatch({ type: "setIsLoading", isLoading: true });
-      try {
-        const response = await fetch(
-          `${serverRootUrl}/diary?${searchParams.toString()}`,
-          {
-            method: "GET",
-            credentials: "include",
-            headers: {
-              "Content-Type": "application/json",
-            },
-          }
-        );
-        const userDiaryData = await response.json();
-        dispatch({ type: "setIsLoading", isLoading: false });
-        dispatch({
-          type: "setData",
-          userDiaryData,
-        });
-      } catch (er) {
-        alert(er.message);
+      const response = await diaryHomePageHelper(searchParams);
+      const responseJson = await response.json();
+      dispatch({ type: "setIsLoading", isLoading: false });
+      if (response.status !== 200) {
+        alert(responseJson.message);
+        navigate("/");
+        return;
       }
-    }
-  }, [searchParams, dispatch]);
+      dispatch({ type: "setData", userDiaryData: responseJson });
+    })();
+  }, [diaryEntries.length, dispatch, searchParams, navigate]);
 
   return (
     <div className="flex gap-2">

@@ -1,16 +1,14 @@
-import { Navigate, Outlet, useLocation } from "react-router-dom";
-import { useDataContext } from "../contexts/DataContext";
+import { Outlet } from "react-router-dom";
 
 export default function ProtectedRoutes() {
-  const [data] = useDataContext();
-  const location = useLocation();
+  return <Outlet />;
 
-  return data.auth ? (
-    <Outlet />
-  ) : (
-    <div>
-      {alert("please login first")}
-      <Navigate to={"/"} replace state={{ from: location }} />
-    </div>
-  );
+  // return data.auth ? (
+  //   <Outlet />
+  // ) : (
+  //   <div>
+  //     {alert("please login first")}
+  //     <Navigate to={"/"} replace state={{ from: location }} />
+  //   </div>
+  // );
 }

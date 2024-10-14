@@ -24,7 +24,7 @@ export default function ModifyOldEntry() {
   async function handleSave(e) {
     e.preventDefault();
 
-    if (!content) return alert("content feild can not be empty");
+    if (!content) return alert("content field can not be empty");
 
     const serverRootUrl = import.meta.env.VITE_SERVER_ROOT_URL;
     const url = `${serverRootUrl}/diary`;

@@ -2,6 +2,7 @@ const userModel = require("../models/userModel");
 const bcrypt = require("bcrypt");
 const { secretToken } = require("../utils/SecretToken");
 const { catchAsyncError } = require("../utils/errorHandler");
+const diaryModel = require("../models/diaryModel");
 
 exports.createNewUser = catchAsyncError(async (req, res, next) => {
   const { name, email, password } = req.body;
@@ -28,10 +29,17 @@ exports.createNewUser = catchAsyncError(async (req, res, next) => {
 
 exports.login = async (req, res, next) => {
   const { email, password } = req.body;
+
   const user = await userModel.findOne({ email });
-  if (!user) return next(Error("user not found! Please signup..."));
+  if (!user)
+    return next({ status: 401, message: `No User found with ${email}` });
+
   const auth = await bcrypt.compare(password, user.password);
   if (!auth) return next(Error("incorrect password"));
+
+  // sending diary data with login success
+  const diaryEntries = await diaryModel.find({ userId: user._id });
+
   const token = secretToken(user._id);
   res.cookie("token", token, {
     withCredentials: true,
@@ -39,7 +47,14 @@ exports.login = async (req, res, next) => {
     secure: true,
     httpOnly: true,
   });
-  res.status(200).json({ message: `welcome back!!! ${user.name}` });
+
+  res.status(200).json({
+    userId: user._id,
+    userName: user.name,
+    userEmail: user.email,
+    noOfEntries: diaryEntries.length,
+    diaryEntries,
+  });
 };
 
 exports.logOut = async (req, res, next) => {
